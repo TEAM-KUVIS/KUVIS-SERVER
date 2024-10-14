@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@FeignClient(name = "flaskClient", url = "${flask.url}")
+@FeignClient(name = "flaskClient", url = "${flask.url}", configuration = FeignConfig.class)
 public interface FlaskClient {
 
     @PostMapping("/process")
