@@ -3,7 +3,7 @@ package com.kuvis.server.api.controller;
 import com.kuvis.server.global.external.FlaskClient;
 import com.kuvis.server.global.external.FlaskRequestDto;
 import com.kuvis.server.global.external.FlaskResponseDto;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
