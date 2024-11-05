@@ -55,7 +55,7 @@ public class S3Service {
             // Persigned URL 생성
             URL url = s3Presigner.presignPutObject(preSignedUrlRequest).url();
 
-            return PreSignedUrlResponse.of(uuidFileName, url.toString());
+            return PreSignedUrlResponse.of("pdfs/"+uuidFileName, url.toString());
 
         } catch (RuntimeException e) {
             throw new RuntimeException("presgned url 생성 에러");
