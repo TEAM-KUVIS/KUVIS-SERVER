@@ -1,11 +1,14 @@
 package com.kuvis.server.api.controller;
 
+import com.kuvis.server.api.dto.PdfNameResponse;
 import com.kuvis.server.api.dto.StorePdfRequest;
 import com.kuvis.server.api.service.QueryService;
 import com.kuvis.server.global.external.FlaskClient;
 import com.kuvis.server.global.external.FlaskRequestDto;
 import com.kuvis.server.global.external.FlaskResponseDto;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,5 +35,11 @@ public class QueryController {
         flaskClient.downloadPdf(storePdfRequest.filename());
         queryService.createPdf(storePdfRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/pdfs")
+    public List<PdfNameResponse> getPdfs() {
+        // Flask 서버로 요청 전송
+        return queryService.getPdfNames();
     }
 }
