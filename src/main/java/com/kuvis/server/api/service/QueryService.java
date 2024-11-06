@@ -3,6 +3,8 @@ package com.kuvis.server.api.service;
 import com.kuvis.server.api.dto.PdfNameResponse;
 import com.kuvis.server.api.dto.QueryRequest;
 import com.kuvis.server.api.dto.StorePdfRequest;
+import com.kuvis.server.api.repository.HistoryEntity;
+import com.kuvis.server.api.repository.HistoryRepository;
 import com.kuvis.server.api.repository.PdfEntity;
 import com.kuvis.server.api.repository.PdfRepository;
 import com.kuvis.server.global.external.FlaskClient;
@@ -21,6 +23,7 @@ public class QueryService {
 
     private final PdfRepository pdfRepository;
     private final FlaskClient flaskClient;
+    private final HistoryRepository historyRepository;
 
     @Transactional
     public void createPdf(StorePdfRequest storePdfRequest) {
@@ -45,6 +48,10 @@ public class QueryService {
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
-        return flaskClient.sendQueryToPython(new QueryPythonRequest(queryRequest.query(), pdf.getFilename()));
+        FlaskResponseDto response = flaskClient.sendQueryToPython(
+                new QueryPythonRequest(queryRequest.query(), pdf.getFilename()));
+        HistoryEntity history = new HistoryEntity(queryRequest.query(), response.getOutputVal(), pdf);
+        historyRepository.save(history);
+        return response;
     }
 }
