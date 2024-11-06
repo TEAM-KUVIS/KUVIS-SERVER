@@ -1,5 +1,6 @@
 package com.kuvis.server.api.service;
 
+import com.kuvis.server.api.dto.HistoryResponse;
 import com.kuvis.server.api.dto.PdfNameResponse;
 import com.kuvis.server.api.dto.QueryRequest;
 import com.kuvis.server.api.dto.StorePdfRequest;
@@ -10,6 +11,7 @@ import com.kuvis.server.api.repository.PdfRepository;
 import com.kuvis.server.global.external.FlaskClient;
 import com.kuvis.server.global.external.FlaskResponseDto;
 import com.kuvis.server.global.external.QueryPythonRequest;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +42,7 @@ public class QueryService {
     }
 
     @Transactional
-    public FlaskResponseDto sendQuery(QueryRequest queryRequest){
+    public FlaskResponseDto sendQuery(QueryRequest queryRequest) {
         PdfEntity pdf = null;
         try {
             pdf = pdfRepository.findById(queryRequest.pdfId())
@@ -53,5 +55,13 @@ public class QueryService {
         HistoryEntity history = new HistoryEntity(queryRequest.query(), response.getOutputVal(), pdf);
         historyRepository.save(history);
         return response;
+    }
+
+    @Transactional(readOnly = true)
+    public List<HistoryResponse> getPdfHistory(Long pdfId) {
+        return historyRepository.findByPdfId(pdfId).stream()
+                .sorted(Comparator.comparing(HistoryEntity::getCreatedAt))
+                .map(history -> new HistoryResponse(history.getQuery(), history.getAnswer()))
+                .collect(Collectors.toList());
     }
 }

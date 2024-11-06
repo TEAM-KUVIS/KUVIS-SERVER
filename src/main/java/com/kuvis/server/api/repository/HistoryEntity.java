@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,14 @@ public class HistoryEntity {
         this.query = query;
         this.answer = answer;
         this.pdf = pdf;
+        this.createdAt = LocalDateTime.now();
     }
 
     @Column(name = "answer", length = 5000)
     private String answer;
+
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "pdf_id", referencedColumnName = "id", nullable = false)

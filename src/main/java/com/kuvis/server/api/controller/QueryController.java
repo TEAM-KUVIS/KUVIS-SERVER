@@ -1,5 +1,6 @@
 package com.kuvis.server.api.controller;
 
+import com.kuvis.server.api.dto.HistoryResponse;
 import com.kuvis.server.api.dto.PdfNameResponse;
 import com.kuvis.server.api.dto.QueryRequest;
 import com.kuvis.server.api.dto.StorePdfRequest;
@@ -8,13 +9,12 @@ import com.kuvis.server.global.external.FlaskClient;
 import com.kuvis.server.global.external.FlaskRequestDto;
 import com.kuvis.server.global.external.FlaskResponseDto;
 import java.util.List;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,5 +50,12 @@ public class QueryController {
             @RequestBody QueryRequest queryRequest
             ) {
         return queryService.sendQuery(queryRequest);
+    }
+
+    @GetMapping("/history/{pdfId}")
+    public List<HistoryResponse> getHistory(
+            @PathVariable Long pdfId
+    ) {
+        return queryService.getPdfHistory(pdfId);
     }
 }
