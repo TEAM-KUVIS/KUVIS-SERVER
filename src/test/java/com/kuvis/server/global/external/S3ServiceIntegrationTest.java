@@ -33,7 +33,7 @@ class S3ServiceIntegrationTest {
         assertThat(response.url()).isNotEmpty();
 
         // 이미지 파일 읽기
-        File file = new File("/Users/seokbeom/graduate-project/server/src/test/resources/한권으로 배우는 도커 & 쿠버네티스.pdf");
+        File file = new File("/Users/seokbeom/graduate-project/server/src/test/resources/건국대학교_공과대학_학생회칙_(2023.02.08_개정).pdf");
         byte[] imageData;
         try (InputStream inputStream = new FileInputStream(file)) {
             imageData = inputStream.readAllBytes();
