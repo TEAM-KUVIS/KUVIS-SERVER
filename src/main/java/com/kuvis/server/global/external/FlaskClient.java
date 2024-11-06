@@ -15,4 +15,7 @@ public interface FlaskClient {
 
     @GetMapping("/download-pdf")
     void downloadPdf(@RequestParam("file_name") String fileName);
+
+    @PostMapping("/query")
+    FlaskResponseDto sendQueryToPython(@RequestBody QueryPythonRequest queryPythonRequest);
 }
